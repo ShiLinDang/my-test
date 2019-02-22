@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.test.demo.dao.SysUserDao">
+    <resultMap id="resMap" type="com.my.test.demo.entity.SysUser">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="real_name" jdbcType="VARCHAR" property="realName" />
+        <result column="sex" jdbcType="VARCHAR" property="sex" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_age" jdbcType="INTEGER" property="userAge" />
+        <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone" />
+    </resultMap>
+
+    <select id="getUserList" resultMap="resMap">
+        SELECT  * FROM sys_user
+    </select>
+
+    <!-- 对应userDao中的insert方法，  -->
+    <insert id="insert" parameterType="com.my.test.demo.entity.SysUser">
+        insert into sys_user(id,password,real_name,sex,user_name,user_age,mobile_phone)
+          values(#{id}, #{password}, #{realName}, #{sex}, #{userName},#{userAge},#{mobilePhone})
+   </insert>
+
+</mapper>

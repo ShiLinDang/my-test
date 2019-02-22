@@ -1,0 +1,14 @@
+server:
+  port: 8088
+  address: 127.0.0.1
+
+spring:
+  datasource:
+    url: jdbc:mysql://47.98.238.150/my-test?useSSL=false&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: admin
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  type-aliases-package: com.my.test.demo.entity
+  mapper-locations: classpath:mapper/*.xml
