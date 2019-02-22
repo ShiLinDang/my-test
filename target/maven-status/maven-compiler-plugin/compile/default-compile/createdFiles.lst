@@ -1,6 +1,0 @@
-com\my\test\demo\controller\SysUserController.class
-com\my\test\demo\entity\SysUser.class
-com\my\test\demo\service\SysUserService.class
-com\my\test\demo\dao\SysUserDao.class
-com\my\test\demo\impl\SysUserServiceImpl.class
-com\my\test\demo\runner\SysUserApp.class

@@ -1,6 +1,8 @@
-D:\mytest\src\main\java\com\my\test\demo\impl\SysUserServiceImpl.java
-D:\mytest\src\main\java\com\my\test\demo\controller\SysUserController.java
-D:\mytest\src\main\java\com\my\test\demo\dao\SysUserDao.java
-D:\mytest\src\main\java\com\my\test\demo\entity\SysUser.java
-D:\mytest\src\main\java\com\my\test\demo\runner\SysUserApp.java
-D:\mytest\src\main\java\com\my\test\demo\service\SysUserService.java
+D:\my-test\src\main\java\com\my\test\demo\controller\SysUserController.java
+D:\my-test\src\main\java\com\my\test\demo\service\RedisUtilService.java
+D:\my-test\src\main\java\com\my\test\demo\impl\RedisUtilServiceImpl.java
+D:\my-test\src\main\java\com\my\test\demo\entity\SysUser.java
+D:\my-test\src\main\java\com\my\test\demo\dao\SysUserDao.java
+D:\my-test\src\main\java\com\my\test\demo\impl\SysUserServiceImpl.java
+D:\my-test\src\main\java\com\my\test\demo\runner\SysUserApp.java
+D:\my-test\src\main\java\com\my\test\demo\service\SysUserService.java
