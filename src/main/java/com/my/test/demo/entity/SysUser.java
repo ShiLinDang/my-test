@@ -1,11 +1,8 @@
 package com.my.test.demo.entity;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -16,7 +13,6 @@ import java.io.Serializable;
 @Data
 @ToString
 public class SysUser implements Serializable {
-    @Id
     private Long id;
     private String password;
     private String realName;
