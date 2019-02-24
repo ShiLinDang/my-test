@@ -23,8 +23,8 @@ public class JedisUtil {
     static {
         try {
             JedisPoolConfig config = new JedisPoolConfig();
-            config.setMaxIdle(1000);
-            config.setMaxTotal(10);
+            config.setMaxIdle(10);
+            config.setMaxTotal(1000);
             config.setMaxWaitMillis(10*1000);
             config.setTestOnBorrow(true);// borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；
             config.setTestOnReturn(true);// return一个jedis实例给pool时，是否检查连接可用,设置为true时，返回的对象如果验证失败，将会被销毁，否则返回

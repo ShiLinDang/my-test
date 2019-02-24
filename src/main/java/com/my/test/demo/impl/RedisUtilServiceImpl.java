@@ -24,7 +24,6 @@ public class RedisUtilServiceImpl implements RedisUtilService {
     private static final String SET_IF_NOT_EXIST = "NX"; //key不存在时，我们进行set操作；若key已经存在，则不做任何操作；
     private static final String SET_WITH_EXPIRE_TIME = "PX"; //要给这个key加一个过期的设置，具体时间由第五个参数决定。
     private static final Long RELEASE_SUCCESS = 1L;
-    private static Jedis jedis = JedisUtil.getJedis();
 
     /**
      * 加锁
@@ -36,6 +35,7 @@ public class RedisUtilServiceImpl implements RedisUtilService {
      */
     @Override
     public Boolean acquireLock(String lockName, String randomValue, int expireTime) {
+        Jedis jedis = JedisUtil.getJedis();
         try {
             while (true){
                 String result = jedis
@@ -66,6 +66,7 @@ public class RedisUtilServiceImpl implements RedisUtilService {
      */
     @Override
     public Boolean releaseLock(String lockName, String randomValue) {
+        Jedis jedis = JedisUtil.getJedis();
         try{
             jedis.watch(lockName);//watch监控
             if(randomValue.equals(jedis.get(lockName))){
