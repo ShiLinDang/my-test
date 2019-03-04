@@ -1,8 +1,12 @@
 package com.my.test.demo.controller;
 
 import com.my.test.demo.entity.SysUser;
+import com.my.test.demo.service.RedisService;
 import com.my.test.demo.service.SysUserService;
+import jdk.nashorn.internal.objects.annotations.Getter;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +21,9 @@ import java.util.List;
 public class SysUserController {
 
     @Autowired
+    private RedisService redisService;
+
+    @Autowired
     private SysUserService userService;
 
     @PostMapping("/add")
@@ -28,5 +35,12 @@ public class SysUserController {
    public String getList(){
         List<SysUser> userList = userService.getUserList();
         return userList.toString();
+   }
+
+   @GetMapping("/add-redis")
+   public void addRedis(){
+       List<SysUser> userList = userService.getUserList();
+       String s = userList.toString();
+       redisService.setValue("userList3:",s);
    }
 }

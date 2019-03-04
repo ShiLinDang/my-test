@@ -9,6 +9,12 @@ spring:
     password: admin
     driver-class-name: com.mysql.jdbc.Driver
 
+  redis:
+    database: 0
+    host: 47.98.238.150
+    port: 6397
+    password: shi974075295
+
 mybatis:
   type-aliases-package: com.my.test.demo.entity
   mapper-locations: classpath:mapper/*.xml
