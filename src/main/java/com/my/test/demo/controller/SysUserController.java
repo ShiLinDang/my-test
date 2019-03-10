@@ -1,6 +1,7 @@
 package com.my.test.demo.controller;
 
 import com.my.test.demo.entity.SysUser;
+import com.my.test.demo.listener.MyHttpSessionListener;
 import com.my.test.demo.service.RedisService;
 import com.my.test.demo.service.SysUserService;
 import jdk.nashorn.internal.objects.annotations.Getter;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -43,4 +46,21 @@ public class SysUserController {
        String s = userList.toString();
        redisService.setValue("userList3:",s);
    }
+
+    @GetMapping("/index")
+    public String index(HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("zxc", "zxc");
+        return  "index";
+    }
+
+    @GetMapping("/online")
+    public String online() {
+        return  "当前在线人数：" + MyHttpSessionListener.online + "人";
+    }
+
+    @GetMapping("/get_name")
+    public String getByName(@RequestParam String realName) {
+        return realName;
+    }
 }

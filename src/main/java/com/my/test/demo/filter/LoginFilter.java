@@ -7,7 +7,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * @Description:
+ * @Description: 过滤器 Filter是Servlet技术中最实用的技术，Web开发人员通过Filter技术，
+ * 对web服务器管理的所有web资源：例如Jsp, Servlet, 静态图片文件或静态 html 文件等进行拦截，从而实现一些特殊的功能。
+ * 例如实现URL级别的权限访问控制、过滤敏感词汇、压缩响应信息等一些高级功能。
+ * 它主要用于对用户请求进行预处理，也可以对HttpServletResponse进行后处理。
+ * 使用Filter的完整流程：Filter对用户请求进行预处理，接着将请求交给Servlet进行处理并生成响应，最后Filter再对服务器响应进行后处理。
  * @author:dangshilin
  * @date 2019/2/2716:02
  */
@@ -17,7 +21,7 @@ public class LoginFilter implements Filter {
     String NO_LOGIN = "您还未登录";
 
     //不需要登录就可以访问的路径(比如:注册登录等)
-    String[] includeUrls = new String[]{"/user/list","/user/add","/user/add-redis"};
+    String[] includeUrls = new String[]{"/user/list","/user/get_name","/user/index","/user/online","/user/add","/user/add-redis"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
