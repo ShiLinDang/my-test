@@ -14,6 +14,9 @@ spring:
     host: 47.98.238.150
     port: 6397
     password: shi974075295
+  data:
+    mongodb:
+      uri: mongodb://tester:password@47.98.238.150:27017/test
 
 mybatis:
   type-aliases-package: com.my.test.demo.entity

@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
  * @date 2019/2/2211:04
  */
 @SpringBootApplication
-@MapperScan("com.my.test.demo.dao")// 扫描mapper映射实体
+@MapperScan("com.my.test.demo.dao")
 @ComponentScan(basePackages = {"com.my.test.demo.*"})
 public class SysUserApp {
     public static void main(String[] args) {
