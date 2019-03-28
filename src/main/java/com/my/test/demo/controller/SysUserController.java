@@ -1,5 +1,6 @@
 package com.my.test.demo.controller;
 
+import com.my.test.demo.config.Producer1;
 import com.my.test.demo.mongoentity.Order;
 import com.my.test.demo.entity.SysUser;
 import com.my.test.demo.listener.MyHttpSessionListener;
@@ -35,6 +36,9 @@ public class SysUserController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private Producer1 producer1;
+
     @PostMapping("/add")
     public void insert(@RequestBody SysUser user){
         userService.insert(user);
@@ -43,6 +47,15 @@ public class SysUserController {
    @GetMapping("/list")
    public String getList(){
         List<SysUser> userList = userService.getUserList();
+       for (SysUser user : userList) {
+            producer1.producer1(user);
+            try{
+                Thread.sleep(2000L);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+                log.error(e.getMessage(),e);
+            }
+       }
         return userList.toString();
    }
 

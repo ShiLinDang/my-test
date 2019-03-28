@@ -18,6 +18,13 @@ spring:
     mongodb:
       uri: mongodb://tester:password@47.98.238.150:27017/test
 
+  rabbitmq:
+    addresses: 47.98.238.150:5672
+    username: admin
+    password: admin
+    publisher-confirms: true
+    virtual-host: /
+
 mybatis:
   type-aliases-package: com.my.test.demo.entity
   mapper-locations: classpath:mapper/*.xml
