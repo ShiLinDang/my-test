@@ -13,6 +13,11 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
     @Bean
     public Queue queue1(){
-        return new Queue("queue1");
+        return new Queue("queue1-showUser");
+    }
+
+    @Bean
+    public Queue queue2(){
+        return new Queue("queue2-showName");
     }
 }

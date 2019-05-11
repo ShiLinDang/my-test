@@ -13,15 +13,21 @@ import java.time.LocalTime;
  * @date 2019/3/2810:37
  */
 @Configuration
-@RabbitListener(queues = "queue1")
-public class Consumer1 {
+public class Consumer {
 
     /**
      * 消费消息
      * @param user
      */
     @RabbitHandler
+    @RabbitListener(queues = "queue1-showUser")
     public  void process1(SysUser user){
         System.out.println("Consumer1" + LocalTime.now() + "********" + user.toString());
+    }
+
+    @RabbitHandler
+    @RabbitListener(queues = "queue2-showName")
+    public  void process2(SysUser user){
+        System.out.println("Consumer2" + LocalTime.now() + "********" + user.getRealName());
     }
 }

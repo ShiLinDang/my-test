@@ -1,6 +1,5 @@
 package com.my.test.demo.controller;
 
-import com.my.test.demo.config.Producer1;
 import com.my.test.demo.mongoentity.Order;
 import com.my.test.demo.entity.SysUser;
 import com.my.test.demo.listener.MyHttpSessionListener;
@@ -9,6 +8,7 @@ import com.my.test.demo.service.RedisService;
 import com.my.test.demo.service.SysUserService;
 import com.my.test.demo.util.CodeUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +37,7 @@ public class SysUserController {
     private OrderService orderService;
 
     @Autowired
-    private Producer1 producer1;
+    private RabbitTemplate rabbitTemplate;
 
     @PostMapping("/add")
     public void insert(@RequestBody SysUser user){
@@ -48,7 +48,8 @@ public class SysUserController {
    public String getList(){
         List<SysUser> userList = userService.getUserList();
        for (SysUser user : userList) {
-            producer1.producer1(user);
+           rabbitTemplate.convertAndSend("queue1-showUser",user);
+           rabbitTemplate.convertAndSend("queue2-showName",user);
             try{
                 Thread.sleep(2000L);
             }catch (InterruptedException e){
