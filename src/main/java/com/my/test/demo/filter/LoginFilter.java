@@ -21,7 +21,7 @@ public class LoginFilter implements Filter {
     String NO_LOGIN = "您还未登录";
 
     //不需要登录就可以访问的路径(比如:注册登录等)
-    String[] includeUrls = new String[]{"/user/list","/user/order/add","/user/get_name","/user/index","/user/online","/user/add","/user/add-redis"};
+    String[] includeUrls = new String[]{"/user/list","/user/updateAge","/user/order/add","/user/get_name","/user/index","/user/online","/user/add","/user/add-redis"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

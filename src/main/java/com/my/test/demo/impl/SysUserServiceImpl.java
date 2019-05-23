@@ -36,4 +36,14 @@ public class SysUserServiceImpl implements SysUserService {
     public List<SysUser> getUserList() {
         return userDao.getUserList();
     }
+
+    @Override
+    public void updateAge(SysUser user) {
+        userDao.updateAge(user);
+    }
+
+    @Override
+    public SysUser findById(Long id) {
+        return userDao.findById(id);
+    }
 }

@@ -15,4 +15,8 @@ public interface SysUserDao {
     void insert(SysUser user);
 
     List<SysUser> getUserList();
+
+    void updateAge(SysUser user);
+
+    SysUser findById(Long id);
 }

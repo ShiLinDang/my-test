@@ -15,10 +15,18 @@
         SELECT  * FROM sys_user
     </select>
 
+    <select id="findById" resultMap="resMap">
+        SELECT  * FROM sys_user where id = #{id}
+    </select>
+
     <!-- 对应userDao中的insert方法，  -->
     <insert id="insert" parameterType="com.my.test.demo.entity.SysUser">
         insert into sys_user(id,password,real_name,sex,user_name,user_age,mobile_phone)
           values(#{id}, #{password}, #{realName}, #{sex}, #{userName},#{userAge},#{mobilePhone})
    </insert>
+
+    <update id="updateAge" parameterType="com.my.test.demo.entity.SysUser">
+      update sys_user set user_age = #{userAge} where id = #{id};
+    </update>
 
 </mapper>

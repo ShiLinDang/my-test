@@ -5,17 +5,22 @@ import com.my.test.demo.entity.SysUser;
 import com.my.test.demo.listener.MyHttpSessionListener;
 import com.my.test.demo.service.OrderService;
 import com.my.test.demo.service.RedisService;
+import com.my.test.demo.service.RedissonService;
 import com.my.test.demo.service.SysUserService;
 import com.my.test.demo.util.CodeUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @Description:
@@ -38,6 +43,9 @@ public class SysUserController {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private RedissonService redissonService;
 
     @PostMapping("/add")
     public void insert(@RequestBody SysUser user){
@@ -97,6 +105,19 @@ public class SysUserController {
             orderService.save(order);
         }catch (Exception e){
             e.printStackTrace();
+            log.error(e.getMessage(),e);
+        }
+    }
+
+    @PutMapping("/updateAge")
+    public void updateUserAge(){
+        try {
+            RLock lock = redissonService.getLock(UUID.randomUUID().toString()+""+Thread.currentThread().getId());
+            SysUser user = userService.findById(3L);
+            user.setUserAge(user.getUserAge()+1);
+            userService.updateAge(user);
+            lock.unlock();
+        } catch (Exception e) {
             log.error(e.getMessage(),e);
         }
     }
