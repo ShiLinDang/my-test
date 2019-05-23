@@ -2,6 +2,7 @@ package com.my.test.demo.impl;
 
 import com.my.test.demo.service.RedissonService;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class RedissonServiceImpl implements RedissonService {
 
     @Autowired
-    RedissonClient redissonClient;
+    private Redisson redisson;
 
     /**
      * 获取锁
@@ -28,7 +29,7 @@ public class RedissonServiceImpl implements RedissonService {
      */
     @Override
     public RLock getLock(String lockKey) {
-        RLock lock = redissonClient.getLock(lockKey);
+        RLock lock = redisson.getLock(lockKey);
         lock.lock();
         return lock;
     }
@@ -40,7 +41,7 @@ public class RedissonServiceImpl implements RedissonService {
      */
     @Override
     public RLock getLock(String lockKey,Integer expireTime) {
-        RLock lock = redissonClient.getLock(lockKey);
+        RLock lock = redisson.getLock(lockKey);
         lock.lock(expireTime, TimeUnit.SECONDS);
         return lock;
     }
@@ -55,7 +56,7 @@ public class RedissonServiceImpl implements RedissonService {
      */
     @Override
     public Boolean tryLock(String lockKey, Integer waitTime, Integer expireTime) {
-        RLock lock = redissonClient.getLock(lockKey);
+        RLock lock = redisson.getLock(lockKey);
         try {
             // 尝试加锁，最多等待3秒，上锁以后10秒自动解锁
             boolean res = lock.tryLock(waitTime, expireTime, TimeUnit.SECONDS);
