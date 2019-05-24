@@ -8,6 +8,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,7 +41,7 @@ public class RedissonServiceImpl implements RedissonService {
      * @param expireTime
      */
     @Override
-    public RLock getLock(String lockKey,Integer expireTime) {
+    public RLock getLock(String lockKey,Long expireTime) {
         RLock lock = redisson.getLock(lockKey);
         lock.lock(expireTime, TimeUnit.SECONDS);
         return lock;
@@ -55,7 +56,7 @@ public class RedissonServiceImpl implements RedissonService {
      * @return 加锁是否成功
      */
     @Override
-    public Boolean tryLock(String lockKey, Integer waitTime, Integer expireTime) {
+    public Boolean tryLock(String lockKey, Long waitTime, Long expireTime) {
         RLock lock = redisson.getLock(lockKey);
         try {
             // 尝试加锁，最多等待3秒，上锁以后10秒自动解锁
@@ -66,6 +67,42 @@ public class RedissonServiceImpl implements RedissonService {
             return false;
         }finally {
             lock.unlock();
+        }
+    }
+
+    /**
+     * 获取公平锁
+     *
+     * @param lockKey
+     * @return
+     */
+    @Override
+    public RLock getFairLock(String lockKey) {
+        RLock fairLock = redisson.getFairLock(lockKey);
+        fairLock.lock();
+        return fairLock;
+    }
+
+    /**
+     * 尝试获取公平锁,最多等待waitTime时间,expireTime以后自动解锁
+     *
+     * @param lockKey
+     * @param waitTime
+     * @param expireTime
+     * @return
+     */
+    @Override
+    public Boolean getFairLock(String lockKey, Long waitTime, Long expireTime) {
+        RLock fairLock = redisson.getFairLock(lockKey);
+        try {
+            // 尝试加锁，最多等待3秒，上锁以后10秒自动解锁
+            boolean res = fairLock.tryLock(waitTime, expireTime, TimeUnit.SECONDS);
+            return res;
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(),e);
+            return false;
+        }finally {
+            fairLock.unlock();
         }
     }
 }

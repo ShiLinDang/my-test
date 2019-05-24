@@ -21,7 +21,7 @@ public interface RedissonService {
      * @param lockKey
      * @param expireTime
      */
-    RLock getLock(String lockKey,Integer expireTime);
+    RLock getLock(String lockKey,Long expireTime);
 
     /**
      * 尝试获取锁,最多等待waitTime时间,expireTime以后自动解锁
@@ -30,5 +30,21 @@ public interface RedissonService {
      * @param expireTime
      * @return 加锁是否成功
      */
-    Boolean tryLock(String lockKey,Integer waitTime,Integer expireTime);
+    Boolean tryLock(String lockKey,Long waitTime,Long expireTime);
+
+    /**
+     * 获取公平锁
+     * @param lockKey
+     * @return
+     */
+    RLock getFairLock(String lockKey);
+
+    /**
+     * 尝试获取公平锁,最多等待waitTime时间,expireTime以后自动解锁
+     * @param lockKey
+     * @param waitTime
+     * @param expireTime
+     * @return
+     */
+    Boolean getFairLock(String lockKey,Long waitTime,Long expireTime);
 }
