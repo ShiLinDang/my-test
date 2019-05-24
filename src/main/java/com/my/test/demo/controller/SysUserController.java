@@ -25,7 +25,7 @@ import java.util.UUID;
 /**
  * @Description:
  * @author:dangshilin
- * @date 2019/2/2211:35
+ * @date 2019/2/22 11:35
  */
 @RestController
 @RequestMapping("user")

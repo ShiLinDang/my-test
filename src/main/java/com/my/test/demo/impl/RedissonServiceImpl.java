@@ -1,5 +1,6 @@
 package com.my.test.demo.impl;
 
+import com.my.test.demo.config.RedissonManager;
 import com.my.test.demo.service.RedissonService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
@@ -20,8 +21,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedissonServiceImpl implements RedissonService {
 
-    @Autowired
-    private Redisson redisson;
+    private Redisson redisson = RedissonManager.getRedisson();
 
     /**
      * 获取锁

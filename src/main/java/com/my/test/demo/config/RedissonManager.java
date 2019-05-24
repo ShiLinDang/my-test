@@ -1,35 +1,23 @@
 package com.my.test.demo.config;
 
 import org.redisson.Redisson;
-import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-/**
- * @Description:
- * @author:dangshilin
- * @date 2019/5/2310:42
- */
-@Configuration
-public class RedissonConfig {
+@Component
+public class RedissonManager {
 
-    @Value("${spring.redis.host}")
-    private String host;
-
-    @Value("${spring.redis.port}")
-    private String port;
-
-    @Value("${spring.redis.password}")
-     private String password;
+    private static Redisson redisson;
 
     private static Config config = new Config();
 
-    @Bean
-    public Redisson getRedisson(){
-
-        config.useSingleServer().setAddress("redis://" + host + ":" + port).setPassword(password)
+    /**
+     * 初始化redisson对象
+     */
+    private static void init(){
+        config.useSingleServer()
+                .setAddress("redis://47.98.238.150:6397")
+                .setPassword("shi974075295")
                 //设置对于master节点的连接池中连接数最大为500
                 .setConnectionPoolSize(500)
                 //如果当前连接池里的连接数量超过了最小空闲连接数，而同时有连接空闲时间超过了该数值，那么这些连接将会自动被关闭，并从连接池里去掉。时间单位是毫秒
@@ -44,6 +32,19 @@ public class RedissonConfig {
                 .setRetryInterval(3000)
                 //如果尝试达到 retryAttempts（命令失败重试次数） 仍然不能将命令发送至某个指定的节点时，将抛出错误。如果尝试在此限制之内发送成功，则开始启用 timeout（命令等待超时） 计时。默认值：3
                 .setRetryAttempts(3);
-        return (Redisson) Redisson.create(config);
+
+        redisson = (Redisson) Redisson.create(config);
+    }
+
+    public static Redisson getRedisson(){
+        if(null == redisson){
+            synchronized (RedissonManager.class){
+                if(null == redisson){
+                    init();
+                    return redisson;
+                }
+            }
+        }
+        return redisson;
     }
 }
