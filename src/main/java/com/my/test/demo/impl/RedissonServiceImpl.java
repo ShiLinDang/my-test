@@ -1,6 +1,6 @@
 package com.my.test.demo.impl;
 
-import com.my.test.demo.config.RedissonManager;
+import com.my.test.demo.config.RedissonConfig;
 import com.my.test.demo.service.RedissonService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
@@ -9,7 +9,6 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,7 +20,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedissonServiceImpl implements RedissonService {
 
-    private Redisson redisson = RedissonManager.getRedisson();
+    @Autowired
+    private RedissonClient redisson;
 
     /**
      * 获取锁

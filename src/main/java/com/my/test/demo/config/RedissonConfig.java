@@ -1,20 +1,19 @@
 package com.my.test.demo.config;
 
 import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@Component
-public class RedissonManager {
+@Configuration
+public class RedissonConfig {
 
-    private static Redisson redisson;
-
-    private static Config config = new Config();
-
-    /**
-     * 初始化redisson对象
-     */
-    private static void init(){
+    @Bean
+    RedissonClient redissonSingle() {
+        Config config = new Config();
         config.useSingleServer()
                 .setAddress("redis://47.98.238.150:6397")
                 .setPassword("shi974075295")
@@ -32,19 +31,6 @@ public class RedissonManager {
                 .setRetryInterval(3000)
                 //如果尝试达到 retryAttempts（命令失败重试次数） 仍然不能将命令发送至某个指定的节点时，将抛出错误。如果尝试在此限制之内发送成功，则开始启用 timeout（命令等待超时） 计时。默认值：3
                 .setRetryAttempts(3);
-
-        redisson = (Redisson) Redisson.create(config);
-    }
-
-    public static Redisson getRedisson(){
-        if(null == redisson){
-            synchronized (RedissonManager.class){
-                if(null == redisson){
-                    init();
-                    return redisson;
-                }
-            }
-        }
-        return redisson;
+        return Redisson.create(config);
     }
 }
