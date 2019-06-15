@@ -1,18 +1,14 @@
-package com.my.test.demo.runner;
+package com.my.test.demo;
 
 import com.my.test.demo.filter.LoginFilter;
 import com.my.test.demo.listener.MyHttpSessionListener;
 import org.mybatis.spring.annotation.MapperScan;
-import org.redisson.Redisson;
-import org.redisson.config.Config;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * @Description:

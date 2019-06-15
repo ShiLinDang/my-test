@@ -1,9 +1,8 @@
 package com.my.test.demo.impl;
 
-import com.my.test.demo.config.RedissonConfig;
+import com.my.test.demo.config.RedissonManager;
 import com.my.test.demo.service.RedissonService;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class RedissonServiceImpl implements RedissonService {
 
     @Autowired
-    private RedissonClient redisson;
+    private RedissonManager redissonManager;
 
     /**
      * 获取锁
@@ -30,7 +29,7 @@ public class RedissonServiceImpl implements RedissonService {
      */
     @Override
     public RLock getLock(String lockKey) {
-        RLock lock = redisson.getLock(lockKey);
+        RLock lock = redissonManager.getRedisson().getLock(lockKey);
         lock.lock();
         return lock;
     }
@@ -42,7 +41,7 @@ public class RedissonServiceImpl implements RedissonService {
      */
     @Override
     public RLock getLock(String lockKey,Long expireTime) {
-        RLock lock = redisson.getLock(lockKey);
+        RLock lock = redissonManager.getRedisson().getLock(lockKey);
         lock.lock(expireTime, TimeUnit.SECONDS);
         return lock;
     }
@@ -57,7 +56,7 @@ public class RedissonServiceImpl implements RedissonService {
      */
     @Override
     public Boolean tryLock(String lockKey, Long waitTime, Long expireTime) {
-        RLock lock = redisson.getLock(lockKey);
+        RLock lock = redissonManager.getRedisson().getLock(lockKey);
         try {
             // 尝试加锁，最多等待3秒，上锁以后10秒自动解锁
             boolean res = lock.tryLock(waitTime, expireTime, TimeUnit.SECONDS);
@@ -78,7 +77,7 @@ public class RedissonServiceImpl implements RedissonService {
      */
     @Override
     public RLock getFairLock(String lockKey) {
-        RLock fairLock = redisson.getFairLock(lockKey);
+        RLock fairLock = redissonManager.getRedisson().getFairLock(lockKey);
         fairLock.lock();
         return fairLock;
     }
@@ -93,7 +92,7 @@ public class RedissonServiceImpl implements RedissonService {
      */
     @Override
     public Boolean getFairLock(String lockKey, Long waitTime, Long expireTime) {
-        RLock fairLock = redisson.getFairLock(lockKey);
+        RLock fairLock = redissonManager.getRedisson().getFairLock(lockKey);
         try {
             // 尝试加锁，最多等待3秒，上锁以后10秒自动解锁
             boolean res = fairLock.tryLock(waitTime, expireTime, TimeUnit.SECONDS);

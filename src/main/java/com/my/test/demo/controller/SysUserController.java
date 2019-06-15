@@ -111,14 +111,24 @@ public class SysUserController {
 
     @PutMapping("/updateAge")
     public void updateUserAge(){
+        RLock lock = null;
         try {
-            RLock lock = redissonService.getLock(UUID.randomUUID().toString()+""+Thread.currentThread().getId());
+            lock = redissonService.getLock(UUID.randomUUID().toString() + "" + Thread.currentThread().getId());
+            Integer count = 0;
+            Object obj = redisService.getValue("count");
+            if (null != obj){
+                count = (Integer) obj;
+            }
+            count++;
+            redisService.setValue("count",count);
             SysUser user = userService.findById(3L);
             user.setUserAge(user.getUserAge()+1);
             userService.updateAge(user);
-            lock.unlock();
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage(),e);
+        }finally {
+            lock.unlock();
         }
     }
 }
