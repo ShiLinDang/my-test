@@ -10,6 +10,9 @@ import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @Description:
  * @author:dangshilin
@@ -46,8 +49,11 @@ public class SysUserApp {
 
         String errUrl = "login.html";
         registration.setFilter(loginFilter());
+        registration.setOrder(1);
+        List<String> urlPatterns = new ArrayList<String>();
+        urlPatterns.add("/*");
         // 过滤应用程序中所有资源,当前应用程序根下的所有文件包括多级子目录下的所有文件，注意这里*前有“/”
-        registration.addUrlPatterns("/*");
+        registration.setUrlPatterns(urlPatterns);
         registration.addInitParameter("ERR_URL", errUrl);
         registration.setName("WebAccessAuthorizeFilterMvc");
         System.out.println("***************************** Filter启动 ***************************");
