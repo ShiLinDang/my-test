@@ -26,7 +26,7 @@ public class RedissonManager {
     @PostConstruct
     private void init() {
         try {
-            config.useSingleServer().setAddress("redis://47.98.238.150:6397")
+            config.useSingleServer().setAddress("redis://47.98.238.150:6379")
                     .setPassword("shi974075295")
                     //设置对于master节点的连接池中连接数最大为500
                     .setConnectionPoolSize(500)
