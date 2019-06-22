@@ -2,11 +2,7 @@ package com.my.test.demo.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
-import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import org.redisson.config.SingleServerConfig;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -20,11 +16,11 @@ public class RedissonManager {
     private Redisson redisson = null;
 
     public Redisson getRedisson() {
-        return redisson;
+        return this.redisson;
     }
 
     @PostConstruct
-    private void init() {
+    private Redisson init() {
         try {
             config.useSingleServer().setAddress("redis://47.98.238.150:6379")
                     .setPassword("shi974075295")
@@ -42,10 +38,11 @@ public class RedissonManager {
                     .setRetryInterval(3000)
                     //如果尝试达到 retryAttempts（命令失败重试次数） 仍然不能将命令发送至某个指定的节点时，将抛出错误。如果尝试在此限制之内发送成功，则开始启用 timeout（命令等待超时） 计时。默认值：3
                     .setRetryAttempts(3);
-            redisson = (Redisson) Redisson.create(config);
             log.info("初始化Redisson 结束");
+            return redisson = (Redisson) Redisson.create(config);
         } catch (Exception e) {
             log.error("Redisson init error",e);
         }
+        return null;
     }
 }

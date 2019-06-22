@@ -123,4 +123,18 @@ public class SysUserController {
         userService.updateAge(user);
         redisUtilService.releaseLock(lockName,randomValue);
     }
+
+    /**
+     * Redisson实现分布式锁
+     */
+    @PutMapping("/updateAge2")
+    public void updateUserAge2(){
+        Long id = 3L;
+        String lockName = id.toString();
+        RLock lock = redissonService.getLock(lockName);
+        SysUser user = userService.findById(id);
+        user.setUserAge(user.getUserAge()+1);
+        userService.updateAge(user);
+        lock.unlock();
+    }
 }
