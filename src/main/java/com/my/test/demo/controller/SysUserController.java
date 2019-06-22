@@ -3,10 +3,7 @@ package com.my.test.demo.controller;
 import com.my.test.demo.mongoentity.Order;
 import com.my.test.demo.entity.SysUser;
 import com.my.test.demo.listener.MyHttpSessionListener;
-import com.my.test.demo.service.OrderService;
-import com.my.test.demo.service.RedisService;
-import com.my.test.demo.service.RedissonService;
-import com.my.test.demo.service.SysUserService;
+import com.my.test.demo.service.*;
 import com.my.test.demo.util.CodeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -47,26 +44,29 @@ public class SysUserController {
     @Autowired
     private RedissonService redissonService;
 
+    @Autowired
+    private RedisUtilService redisUtilService;
+
     @PostMapping("/add")
     public void insert(@RequestBody SysUser user){
         userService.insert(user);
    }
 
-   @GetMapping("/list")
-   public String getList(){
-        List<SysUser> userList = userService.getUserList();
-       for (SysUser user : userList) {
-           rabbitTemplate.convertAndSend("queue1-showUser",user);
-           rabbitTemplate.convertAndSend("queue2-showName",user);
-            try{
-                Thread.sleep(2000L);
-            }catch (InterruptedException e){
-                e.printStackTrace();
-                log.error(e.getMessage(),e);
-            }
-       }
-        return userList.toString();
-   }
+//   @GetMapping("/list")
+//   public String getList(){
+//        List<SysUser> userList = userService.getUserList();
+//       for (SysUser user : userList) {
+//           rabbitTemplate.convertAndSend("queue1-showUser",user);
+//           rabbitTemplate.convertAndSend("queue2-showName",user);
+//            try{
+//                Thread.sleep(2000L);
+//            }catch (InterruptedException e){
+//                e.printStackTrace();
+//                log.error(e.getMessage(),e);
+//            }
+//       }
+//        return userList.toString();
+//   }
 
    @GetMapping("/add-redis")
    public void addRedis(){
@@ -109,26 +109,18 @@ public class SysUserController {
         }
     }
 
+    /**
+     * Jedis实现分布式锁
+     */
     @PutMapping("/updateAge")
     public void updateUserAge(){
-        RLock lock = null;
-        try {
-            lock = redissonService.getLock(UUID.randomUUID().toString() + "" + Thread.currentThread().getId());
-            Integer count = 0;
-            Object obj = redisService.getValue("count");
-            if (null != obj){
-                count = (Integer) obj;
-            }
-            count++;
-            redisService.setValue("count",count);
-            SysUser user = userService.findById(3L);
-            user.setUserAge(user.getUserAge()+1);
-            userService.updateAge(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage(),e);
-        }finally {
-            lock.unlock();
-        }
+        Long id = 3L;
+        String lockName = id.toString();
+        String randomValue = String.valueOf(Thread.currentThread().getId());
+        redisUtilService.acquireLock(lockName,randomValue,5_000);
+        SysUser user = userService.findById(id);
+        user.setUserAge(user.getUserAge()+1);
+        userService.updateAge(user);
+        redisUtilService.releaseLock(lockName,randomValue);
     }
 }

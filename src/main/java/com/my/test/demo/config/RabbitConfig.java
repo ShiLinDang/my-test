@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Configuration;
  * @author:dangshilin
  * @date 2019/3/2810:28
  */
-@Configuration
-public class RabbitConfig {
-    @Bean
-    public Queue queue1(){
-        return new Queue("queue1-showUser");
-    }
-
-    @Bean
-    public Queue queue2(){
-        return new Queue("queue2-showName");
-    }
-}
+//@Configuration
+//public class RabbitConfig {
+//    @Bean
+//    public Queue queue1(){
+//        return new Queue("queue1-showUser");
+//    }
+//
+//    @Bean
+//    public Queue queue2(){
+//        return new Queue("queue2-showName");
+//    }
+//}

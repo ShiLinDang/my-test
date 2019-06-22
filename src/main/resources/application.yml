@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://47.98.238.150/my-test?useSSL=false&characterEncoding=utf-8&autoReconnect=true
     username: root
-    password: admin
+    password: shi974075295
     driver-class-name: com.mysql.jdbc.Driver
 
   redis:

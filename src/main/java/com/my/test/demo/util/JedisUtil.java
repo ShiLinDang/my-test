@@ -10,7 +10,7 @@ public class JedisUtil {
     private static String ADDRESS = "47.98.238.150";
 
     // Redis的端口号
-    private static int PORT = 6397;
+    private static int PORT = 6379;
 
     // 访问密码
     private static String PASSWORD = "shi974075295";
