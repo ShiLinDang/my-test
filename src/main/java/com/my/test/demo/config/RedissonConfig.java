@@ -2,28 +2,32 @@ package com.my.test.demo.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
-@Component
+@Configuration
 @Slf4j
-public class RedissonManager {
+public class RedissonConfig {
 
-    private Config config = new Config();
+    @Value("${spring.redis.host}")
+    private String host;
 
-    private Redisson redisson = null;
+    @Value("${spring.redis.port}")
+    private String port;
 
-    public Redisson getRedisson() {
-        return this.redisson;
-    }
+    @Value("${spring.redis.password}")
+    private String password;
 
-    @PostConstruct
-    private Redisson init() {
+    @Bean
+    public RedissonClient getRedissonClient() {
         try {
-            config.useSingleServer().setAddress("redis://47.98.238.150:6379")
-                    .setPassword("shi974075295")
+            Config config = new Config();
+            config.useSingleServer().setAddress("redis://" + host + ":" + port)
+                    .setPassword(password)
                     //设置对于master节点的连接池中连接数最大为500
                     .setConnectionPoolSize(500)
                     //如果当前连接池里的连接数量超过了最小空闲连接数，而同时有连接空闲时间超过了该数值，那么这些连接将会自动被关闭，并从连接池里去掉。时间单位是毫秒
@@ -39,7 +43,7 @@ public class RedissonManager {
                     //如果尝试达到 retryAttempts（命令失败重试次数） 仍然不能将命令发送至某个指定的节点时，将抛出错误。如果尝试在此限制之内发送成功，则开始启用 timeout（命令等待超时） 计时。默认值：3
                     .setRetryAttempts(3);
             log.info("初始化Redisson 结束");
-            return redisson = (Redisson) Redisson.create(config);
+            return Redisson.create(config);
         } catch (Exception e) {
             log.error("Redisson init error",e);
         }
