@@ -1,22 +1,27 @@
 package com.my.test.demo.controller;
 
+import com.my.test.demo.annotation.ApiIdempotent;
 import com.my.test.demo.mongoentity.Order;
 import com.my.test.demo.entity.SysUser;
 import com.my.test.demo.listener.MyHttpSessionListener;
 import com.my.test.demo.service.*;
 import com.my.test.demo.util.CodeUtil;
+import com.my.test.demo.util.JedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.text.StrBuilder;
 import org.redisson.api.RLock;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -47,6 +52,10 @@ public class SysUserController {
     @Autowired
     private RedisUtilService redisUtilService;
 
+    @Autowired
+    private JedisUtil jedisUtil;
+
+    @ApiIdempotent
     @PostMapping("/add")
     public void insert(@RequestBody SysUser user){
         userService.insert(user);
@@ -81,6 +90,17 @@ public class SysUserController {
         session.setAttribute("zxc", "zxc");
         return  "index";
     }
+
+    @GetMapping("/token")
+    public String getToken() {
+        String str = String.valueOf(System.currentTimeMillis());
+        StrBuilder token = new StrBuilder();
+        token.append(str).append(":").append(new Random().nextInt(10000));
+        String s = token.toString();
+        jedisUtil.set(s,"token",3 * 60);
+        return s;
+    }
+
 
     @GetMapping("/online")
     public String online() {

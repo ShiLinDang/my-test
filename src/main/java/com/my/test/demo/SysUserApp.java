@@ -1,6 +1,7 @@
 package com.my.test.demo;
 
 import com.my.test.demo.filter.LoginFilter;
+import com.my.test.demo.interceptor.ApiIdempotentInterceptor;
 import com.my.test.demo.listener.MyHttpSessionListener;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -9,6 +10,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,4 +66,9 @@ public class SysUserApp {
     public LoginFilter loginFilter(){
         return new LoginFilter();
     }
+
+//    @Bean
+//    public ApiIdempotentInterceptor apiIdempotentInterceptor() {
+//        return new ApiIdempotentInterceptor();
+//    }
 }

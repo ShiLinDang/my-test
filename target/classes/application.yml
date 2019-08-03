@@ -14,6 +14,7 @@ spring:
     host: 47.98.238.150
     port: 6379
     password: shi974075295
+
   data:
     mongodb:
       uri: mongodb://tester:shi974075295@47.98.238.150:27017/test

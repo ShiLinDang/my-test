@@ -37,7 +37,7 @@ public class SysUserAspectResource {
      */
     @Before("pointCut()")
     public void doBefore(JoinPoint joinPoint){
-        System.out.println("切入点执行**********************************");
+            System.out.println("切入点执行**********************************");
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
 
