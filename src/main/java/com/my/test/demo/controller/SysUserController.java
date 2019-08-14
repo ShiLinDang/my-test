@@ -84,6 +84,13 @@ public class SysUserController {
        redisService.setValue("userList3:",s);
    }
 
+   @GetMapping("/{userId}")
+   public String getByUserId(@PathVariable Long userId){
+        SysUser user = userService.getByUserId(userId);
+       System.out.println("**************"+user.getRealName());
+       return user.getRealName();
+   }
+
     @GetMapping("/index")
     public String index(HttpServletRequest request) {
         HttpSession session = request.getSession(true);

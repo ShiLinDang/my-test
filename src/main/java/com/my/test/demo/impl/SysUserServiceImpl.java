@@ -5,6 +5,7 @@ import com.my.test.demo.entity.SysUser;
 import com.my.test.demo.service.RedisUtilService;
 import com.my.test.demo.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,5 +46,13 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public SysUser findById(Long id) {
         return userDao.findById(id);
+    }
+
+    @Override
+    @Cacheable(cacheNames = "getOne",key = "#userId.toString()",condition = "#userId==3")
+    public SysUser getByUserId(Long userId) {
+        SysUser user = userDao.findById(userId);
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        return user;
     }
 }

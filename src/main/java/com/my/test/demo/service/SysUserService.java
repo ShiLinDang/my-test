@@ -19,4 +19,6 @@ public interface SysUserService {
     void updateAge(SysUser user);
 
     SysUser findById(Long id);
+
+    SysUser getByUserId(Long userId);
 }
