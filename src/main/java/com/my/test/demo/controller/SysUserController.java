@@ -2,6 +2,7 @@ package com.my.test.demo.controller;
 
 import com.my.test.demo.annotation.ApiIdempotent;
 import com.my.test.demo.lock.ExclusiveLock;
+import com.my.test.demo.lock.ReadWriteLock;
 import com.my.test.demo.mongoentity.Order;
 import com.my.test.demo.entity.SysUser;
 import com.my.test.demo.listener.MyHttpSessionListener;
@@ -164,12 +165,12 @@ public class SysUserController {
     public void updateUserAgeByZoo(){
         Long id = 3L;
         CuratorFramework curatorFramework = CuratorUtils.getInstance(connectString);
-        ExclusiveLock exclusiveLock = new ExclusiveLock(curatorFramework,"/user/age");
-        if(exclusiveLock.getLock(5, TimeUnit.SECONDS)) {
-            SysUser user = userService.findById(id);
-            user.setUserAge(user.getUserAge()+1);
-            userService.updateAge(user);
-        }
+        ReadWriteLock exclusiveLock = new ReadWriteLock(curatorFramework,"/user/age");
+        exclusiveLock.getWriteLockObject();
+        SysUser user = userService.findById(id);
+        user.setUserAge(user.getUserAge()+1);
+        userService.updateAge(user);
+        exclusiveLock.writeLockRelease();
         System.out.println("**************************");
     }
 
