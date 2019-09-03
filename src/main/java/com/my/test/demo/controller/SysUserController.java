@@ -1,14 +1,17 @@
 package com.my.test.demo.controller;
 
 import com.my.test.demo.annotation.ApiIdempotent;
+import com.my.test.demo.lock.ExclusiveLock;
 import com.my.test.demo.mongoentity.Order;
 import com.my.test.demo.entity.SysUser;
 import com.my.test.demo.listener.MyHttpSessionListener;
 import com.my.test.demo.service.*;
 import com.my.test.demo.util.CodeUtil;
+import com.my.test.demo.util.CuratorUtils;
 import com.my.test.demo.util.JedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.apache.curator.framework.CuratorFramework;
 import org.redisson.api.RLock;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description:
@@ -54,6 +58,11 @@ public class SysUserController {
 
     @Autowired
     private JedisUtil jedisUtil;
+
+    /**
+     * zk集群地址
+     */
+    private static String connectString = "47.98.238.150:2181";
 
     @ApiIdempotent
     @PostMapping("/add")
@@ -149,6 +158,19 @@ public class SysUserController {
         user.setUserAge(user.getUserAge()+1);
         userService.updateAge(user);
         redisUtilService.releaseLock(lockName,randomValue);
+    }
+
+    @PutMapping("/updateAgeByZoo")
+    public void updateUserAgeByZoo(){
+        Long id = 3L;
+        CuratorFramework curatorFramework = CuratorUtils.getInstance(connectString);
+        ExclusiveLock exclusiveLock = new ExclusiveLock(curatorFramework,"/user/age");
+        if(exclusiveLock.getLock(5, TimeUnit.SECONDS)) {
+            SysUser user = userService.findById(id);
+            user.setUserAge(user.getUserAge()+1);
+            userService.updateAge(user);
+        }
+        System.out.println("**************************");
     }
 
     /**
