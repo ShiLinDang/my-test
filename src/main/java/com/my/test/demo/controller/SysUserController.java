@@ -165,12 +165,12 @@ public class SysUserController {
     public void updateUserAgeByZoo(){
         Long id = 3L;
         CuratorFramework curatorFramework = CuratorUtils.getInstance(connectString);
-        ReadWriteLock exclusiveLock = new ReadWriteLock(curatorFramework,"/user/age");
-        exclusiveLock.getWriteLockObject();
+        ExclusiveLock exclusiveLock = new ExclusiveLock(curatorFramework,"/user/age");
+        exclusiveLock.getLock();
         SysUser user = userService.findById(id);
         user.setUserAge(user.getUserAge()+1);
         userService.updateAge(user);
-        exclusiveLock.writeLockRelease();
+        exclusiveLock.lockRelease();
         System.out.println("**************************");
     }
 
