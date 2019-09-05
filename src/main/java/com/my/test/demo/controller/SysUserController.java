@@ -197,6 +197,7 @@ public class SysUserController {
         CommonConstant constant = new MyTest();
         constant.show();
         CommonConstant.show2();
-        return testString + ":" + CommonConstant.DeleteFlag.NORMAL.getDesc();
+        String aliPay = CommonConstant.PaymentMethod.AliPay;
+        return testString + ":" + CommonConstant.DeleteFlag.NORMAL.getDesc() + ":" + aliPay;
     }
 }

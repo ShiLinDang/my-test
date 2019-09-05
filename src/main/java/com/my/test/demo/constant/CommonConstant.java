@@ -62,4 +62,25 @@ public interface CommonConstant {
     static String show2(){
         return "Xixixix......";
     }
+
+    /**
+     * 支付方式
+     */
+    interface PaymentMethod {
+
+        /**
+         * BC 支付
+         */
+        String BCPay = "101";
+
+        /**
+         * 支付宝
+         */
+        String AliPay = "1001";
+
+        /**
+         * 微信支付
+         */
+        String WXPay = "1002";
+    }
 }
