@@ -1,6 +1,8 @@
 package com.my.test.demo.controller;
 
 import com.my.test.demo.annotation.ApiIdempotent;
+import com.my.test.demo.constant.CommonConstant;
+import com.my.test.demo.constant.MyTest;
 import com.my.test.demo.lock.ExclusiveLock;
 import com.my.test.demo.lock.ReadWriteLock;
 import com.my.test.demo.mongoentity.Order;
@@ -10,6 +12,7 @@ import com.my.test.demo.service.*;
 import com.my.test.demo.util.CodeUtil;
 import com.my.test.demo.util.CuratorUtils;
 import com.my.test.demo.util.JedisUtil;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.text.StrBuilder;
 import org.apache.curator.framework.CuratorFramework;
@@ -186,5 +189,14 @@ public class SysUserController {
         user.setUserAge(user.getUserAge()+1);
         userService.updateAge(user);
         lock.unlock();
+    }
+
+    @GetMapping("/test")
+    public String showTest(){
+        String testString = CommonConstant.TEST_STRING;
+        CommonConstant constant = new MyTest();
+        constant.show();
+        CommonConstant.show2();
+        return testString + ":" + CommonConstant.DeleteFlag.NORMAL.getDesc();
     }
 }
