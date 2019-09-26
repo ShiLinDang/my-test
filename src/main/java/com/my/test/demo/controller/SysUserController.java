@@ -19,6 +19,7 @@ import org.apache.curator.framework.CuratorFramework;
 import org.redisson.api.RLock;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
@@ -62,6 +63,9 @@ public class SysUserController {
 
     @Autowired
     private JedisUtil jedisUtil;
+
+    @Autowired
+    private Environment environment;
 
     /**
      * zk集群地址
@@ -199,5 +203,12 @@ public class SysUserController {
         CommonConstant.show2();
         String aliPay = CommonConstant.PaymentMethod.AliPay;
         return testString + ":" + CommonConstant.DeleteFlag.NORMAL.getDesc() + ":" + aliPay;
+    }
+
+    @GetMapping("/getAddress")
+    public String getAddress(){
+        // 获取资源配置
+        String property = environment.getProperty("spring.redis.host");
+        return property;
     }
 }
