@@ -1,6 +1,7 @@
 package com.my.test.demo.controller;
 
 import com.my.test.demo.annotation.ApiIdempotent;
+import com.my.test.demo.annotation.Sensitive;
 import com.my.test.demo.constant.CommonConstant;
 import com.my.test.demo.constant.MyTest;
 import com.my.test.demo.lock.ExclusiveLock;
@@ -210,5 +211,12 @@ public class SysUserController {
         // 获取资源配置
         String property = environment.getProperty("spring.redis.host");
         return property;
+    }
+
+    @GetMapping("/showSensitive")
+    @Sensitive
+    public SysUser showSensitive(){
+        SysUser user = userService.findById(3L);
+        return user;
     }
 }
