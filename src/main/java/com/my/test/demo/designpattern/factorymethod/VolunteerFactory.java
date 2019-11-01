@@ -16,5 +16,7 @@ public class VolunteerFactory implements IFactory{
     public static void main(String[] args) {
         VolunteerFactory factory = new VolunteerFactory();
         LiuFeng liuFeng = factory.createLiuFeng();
+        System.out.println(liuFeng.getWhichOne());
+        System.out.println(liuFeng.isDoBuyRice());
     }
 }
