@@ -8,6 +8,9 @@ package com.my.test.demo.designpattern.factorymethod;
  */
 public class Undergraduate extends LiuFeng{
     public Undergraduate(){
+        // 调用父类构造函数构造LeiFeng对象,同时运用了多态
+        super();
+        // this 指代Undergraduate 谁调用指代谁
         setWhichOne(this.getClass().getSimpleName());
     }
 }

@@ -8,6 +8,9 @@ package com.my.test.demo.designpattern.factorymethod;
  */
 public class Volunteer extends LiuFeng{
     public Volunteer (){
+        // 调用父类构造函数构造LeiFeng对象,同时运用了多态
+        super();
+        // this Volunteer 谁调用指代谁
         setWhichOne(this.getClass().getSimpleName());
     }
 }
