@@ -79,21 +79,21 @@ public class SysUserController {
         userService.insert(user);
    }
 
-//   @GetMapping("/list")
-//   public String getList(){
-//        List<SysUser> userList = userService.getUserList();
-//       for (SysUser user : userList) {
-//           rabbitTemplate.convertAndSend("queue1-showUser",user);
-//           rabbitTemplate.convertAndSend("queue2-showName",user);
-//            try{
-//                Thread.sleep(2000L);
-//            }catch (InterruptedException e){
-//                e.printStackTrace();
-//                log.error(e.getMessage(),e);
-//            }
-//       }
-//        return userList.toString();
-//   }
+   @GetMapping("/list")
+   public String getList(){
+        List<SysUser> userList = userService.getUserList();
+       for (SysUser user : userList) {
+           rabbitTemplate.convertAndSend("queue1-showUser",user);
+           rabbitTemplate.convertAndSend("queue2-showName",user);
+            try{
+                Thread.sleep(2000L);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+                log.error(e.getMessage(),e);
+            }
+       }
+        return userList.toString();
+   }
 
    @GetMapping("/add-redis")
    public void addRedis(){
